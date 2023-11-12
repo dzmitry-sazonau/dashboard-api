@@ -1,12 +1,11 @@
-import express, { Express } from "express";
-import { Server } from 'http'
-import { IUsersController } from "./users/users.controller.interface";
-import { ILoggerService } from "./logger/logger.service.interface";
-import { inject, injectable } from "inversify";
-import { TYPES } from "./types";
-import { IExceptionFilter } from "./error/exception.filter.interface";
-import "reflect-metadata";
-
+import express, { Express } from 'express';
+import { Server } from 'http';
+import { IUsersController } from './users/users.controller.interface';
+import { ILoggerService } from './logger/logger.service.interface';
+import { inject, injectable } from 'inversify';
+import { TYPES } from './types';
+import { IExceptionFilter } from './error/exception.filter.interface';
+import 'reflect-metadata';
 
 @injectable()
 export class App {
@@ -17,28 +16,26 @@ export class App {
   constructor(
     @inject(TYPES.ILoggerService) private logger: ILoggerService,
     @inject(TYPES.IUsersController) private userController: IUsersController,
-    @inject(TYPES.IExceptionFilter) private exceptionFilter: IExceptionFilter
+    @inject(TYPES.IExceptionFilter) private exceptionFilter: IExceptionFilter,
   ) {
     this.app = express();
     this.port = 8000;
   }
 
-  useRouter() {
-    this.app.use('/users', this.userController.router)
+  useRouter(): void {
+    this.app.use('/users', this.userController.router);
   }
 
-  useExceptionFilter() {
-    this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter))
+  useExceptionFilter(): void {
+    this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
   }
 
-  public async init() {
+  public async init(): Promise<void> {
     this.useRouter();
     this.useExceptionFilter();
 
     this.server = this.app.listen(this.port, () => {
-      this.logger.log(`Server running on http://localhost:${this.port}`)
+      this.logger.log(`Server running on http://localhost:${this.port}`);
     });
-
   }
-
 }
