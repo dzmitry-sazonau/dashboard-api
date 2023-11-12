@@ -4,8 +4,8 @@ import { HttpError } from '../error/http-error.class';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
 import { ILoggerService } from '../logger/logger.service.interface';
-import 'reflect-metadata';
 import { IUsersController } from './users.controller.interface';
+import 'reflect-metadata';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
